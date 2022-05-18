@@ -1,0 +1,26 @@
+<launch>
+
+<!-- All behaviors should be listed here.
+     PLEASE keep the list ordered alphabetically by node name -->
+  <group ns="$(env MBOT_NAME)">
+    <rosparam command="load" file="$(find config)/uc3m_lab_places.yaml" />
+    
+    <include file="$(find launch)/mbot/uc3m_stage_simulation.launch"/>
+    
+    <node name="behavior_patrolling"
+        pkg="monarch_behaviors"
+        type="uc3m_patrolling.py"/>
+<!-- 
+    <node name="smach_viewer"
+          pkg="smach_view"
+          type="smach_viewer.py"/>
+ -->
+<!-- 
+    <node name="axclient"
+                pkg="actionlib"
+                type="axclient.py"
+                output="screen"
+                args="interaction_behavior_executor"/>
+-->
+  </group>
+</launch>

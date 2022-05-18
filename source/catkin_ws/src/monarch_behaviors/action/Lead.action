@@ -1,0 +1,13 @@
+# Define the goal
+#uint32 camera_id
+#PoseStamped target position for catchandtouch
+#Float vel
+
+monarch_msgs/KeyValuePairArray goal
+
+---
+# Define the result
+#bool reached
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message

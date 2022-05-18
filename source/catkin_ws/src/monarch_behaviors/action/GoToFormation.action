@@ -1,0 +1,21 @@
+# Define the goal
+#string location
+#int leader_id
+#int number_followers
+#int follower1_id
+#...
+#int followern_id
+#float bias_x_follower1
+#float bias_y_follower1
+#...
+#float bias_x_followern
+#float bias_y_followern
+monarch_msgs/KeyValuePairArray goal
+---
+# Define the result
+#bool reached
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message
+#bool formation_intact
+monarch_msgs/KeyValuePairArray feedback

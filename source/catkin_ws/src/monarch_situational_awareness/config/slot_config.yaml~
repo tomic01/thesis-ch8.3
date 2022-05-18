@@ -1,0 +1,291 @@
+singles:
+  - 
+    name: Fake_People_Localization_Tracker
+    description: 'Location of the People in the setup'
+    type_str: monarch_msgs/PersonLocalizationTrackingDataArray
+    is_shared: True
+    is_latched: True
+  - 
+    name: People_Localization_Tracker  
+    description: 'Location of the People in the setup'
+    type_str: monarch_msgs/PersonLocalizationTrackingDataArray
+    is_shared: True
+    is_latched: False
+  - 
+    name: mcmc_global  
+    description: 'Hypothesis of location of people'
+    type_str: monarch_msgs/PersonLocalizationTrackingParticleArray
+    is_shared: True
+    is_latched: False    
+  - 
+    name: People_Localization_Tracker_2  
+    description: 'Location of the People in the setup'
+    type_str: monarch_msgs/PersonLocalizationTrackingDataArray
+    is_shared: True
+    is_latched: False   
+  - 
+    name: People_Localization_Tracker_onboard  
+    description: 'Location of the People fused from onboard sensors'
+    type_str: monarch_msgs/PersonLocalizationTrackingDataArray
+    is_shared: True
+    is_latched: False       
+  - 
+    name: Person_Tracking_Onboard  
+    description: 'Location of the Person detected by the kinect'
+    type_str: monarch_msgs/PersonLocalizationTrackingDataArray 
+    is_shared: True
+    is_latched: False
+  - 
+    name: Robot_Localization_Tracker
+    description: 'Location of the Robot in the setup'
+    type_str: monarch_msgs/PersonLocalizationTrackingDataArray
+    is_shared: False
+    is_latched: False
+  - 
+    name: Leader_Assist
+    description: 'Formation leader informing about constrained space'
+    type_str: std_msgs/UInt32
+    is_shared: True
+    is_latched: True
+  - 
+    name: Follower1_handshake
+    description: 'Follower1 ready'
+    type_str: std_msgs/UInt32
+    is_shared: True
+    is_latched: True
+  - 
+    name: Follower2_handshake
+    description: 'Follower2 ready'
+    type_str: std_msgs/UInt32
+    is_shared: True
+    is_latched: True
+  - 
+    name: Follower3_handshake
+    description: 'Follower3 ready'
+    type_str: std_msgs/UInt32
+    is_shared: True
+    is_latched: True
+  - 
+    name: Follower_1_Bias
+    description: 'Value used for the formation change'
+    type_str: std_msgs/Float32MultiArray
+    is_shared: True
+    is_latched: False
+  - 
+    name: Follower_2_Bias
+    description: 'Value used for the formation change'
+    type_str: std_msgs/Float32MultiArray
+    is_shared: True
+    is_latched: False
+  - 
+    name: Follower_3_Bias
+    description: 'Value used for the formation change'
+    type_str: std_msgs/Float32MultiArray
+    is_shared: True
+    is_latched: False
+  - 
+    name: Follower_1_Ready
+    description: 'Follower1 ready'
+    type_str: std_msgs/Bool
+    is_shared: True
+    is_latched: False
+  - 
+    name: Follower_2_Ready
+    description: 'Follower2 ready'
+    type_str: std_msgs/Bool
+    is_shared: True
+    is_latched: False
+  - 
+    name: Follower_3_Ready
+    description: 'Follower3 ready'
+    type_str: std_msgs/Bool
+    is_shared: True
+    is_latched: False
+  - 
+    name: objectFusedEstimation
+    description: 'Result of sensor fusion (see slot "objectEstimate")'
+    type_str: std_msgs/Float32MultiArray
+    is_shared: True
+    is_latched: False
+  - 
+    name: VirtualLeader
+    description: 'Publishes position(s) of virtual leader(s)'
+    type_str: adaptive_formations/VirtualLeaderMsg
+    is_shared: True
+    is_latched: True
+groups:
+  - 
+    representative:
+        name: BatteriesVoltage
+        description: 'The voltage of the batteries of this robot, to be read by the planner'
+        type_str: monarch_msgs/BatteriesVoltage
+        is_shared: True
+        is_latched: True
+  - 
+    representative:
+        name: ExecuteBehavior
+        description: 'Used by GBM to send behavior execution command to MBots'
+        type_str: monarch_msgs/BehaviorSelection
+        is_shared: True
+        is_latched: False
+  -
+    representative:
+        name: CurrentExecutingBehaviors
+        description: 'Used by LBM to let SAP and GBM what behavior an MBot is executing'
+        type_str: monarch_msgs/BehaviorSelectionArray
+        is_shared: True
+        is_latched: True
+  -
+    representative:
+        name: CurrentBehaviorFeedback
+        description: 'Used by LBM to let SAP and GBM the feedback from the behavior this MBot is executing'
+        type_str: monarch_msgs/KeyValuePairArray
+        is_shared: True
+        is_latched: True
+  -
+    representative:
+        name: CurrentBehaviorResult
+        description: 'Used by LBM to let SAP and GBM the result from the behavior this MBot is executing'
+        type_str: monarch_msgs/KeyValuePairArray
+        is_shared: True
+        is_latched: False
+  - 
+    representative:
+        name: AllocateBehaviorRequest
+        description: 'Used by GBA to request a bid/fitness value to the allocation of a behavior from the robots'
+        type_str: monarch_msgs/BehaviorSelection
+        is_shared: True
+        is_latched: False
+  - 
+    representative:
+        name: AllocateBehaviorResponse
+        description: 'Used by the robots to reply to requests made by the GBA'
+        type_str: std_msgs/Float32
+        is_shared: True
+        is_latched: False
+  - 
+    representative:
+        name: CBAASharedBids
+        description: 'Used by the robots to share their CBAA bids'
+        type_str: monarch_msgs/KeyValuePairArray
+        is_shared: True
+        is_latched: False
+  -
+    representative:
+        name: IsPersonClose
+        description: 'A Predicate that represents wether or not a person is close to this robot,based on camera inputs'
+        type_str: monarch_msgs/KeyValuePair
+        is_shared: True
+        is_latched: True
+  - 
+    representative:
+        name: RFIDReading
+        description: 'The raw data read by the RFID sensor'
+        type_str: monarch_msgs/RfidReading
+        is_shared: True
+        is_latched: False
+  - 
+    representative:
+        name: RFIDInfo
+        description: 'RFID data plus additional information about the card holder.'
+        type_str: monarch_msgs/KeyValuePairArray
+        is_shared: True
+        is_latched: False
+  -
+     representative: 
+       name: tfPose
+       description: 'Pose obtained from map->base link tf'
+       type_str: geometry_msgs/Pose
+       is_shared: True
+       is_latched: True
+  -
+     representative: 
+       name: zonePose
+       description: 'Pose based on the zones defined by a colormap'
+       type_str: std_msgs/String
+       is_shared: True
+       is_latched: True
+  - 
+     representative:
+       name: People_In_Map_Skeleton_Tracker  
+       description: 'Location of the People from skeleton tracker'
+       type_str:  monarch_msgs/locs
+       is_shared: True
+       is_latched: False       
+  -
+     representative: 
+       name: objectEstimate
+       description: 'Input to sensor fusion node'
+       type_str: std_msgs/Float32MultiArray
+       is_shared: True
+       is_latched: True
+  -
+     representative: 
+       name: flowfreeGoal
+       description: 'Next goal for the robot in the game'
+       type_str: monarch_msgs/GameGoal
+       is_shared: True
+       is_latched: True
+  -
+     representative: 
+       name: flowfreeGoalFeedback
+       description: 'Status of current goal'
+       type_str: std_msgs/String
+       is_shared: True
+       is_latched: True
+  -
+     representative: 
+       name: flowfreeHRI
+       description: 'HRI command for robots during flowfree game (CEs)'
+       type_str: monarch_msgs/GameHriGoal
+       is_shared: True
+       is_latched: False
+  -
+     representative: 
+       name: RFIDAngle
+       description: 'tag angle relative to the robot'
+       type_str: monarch_msgs/RfidReading
+       is_shared: True
+       is_latched: False
+  -
+     representative: 
+       name: RFIDTagID
+       description: 'tagID that is being processed for location estimation'
+       type_str: std_msgs/UInt64
+       is_shared: True
+       is_latched: False
+  -
+     representative:
+       name: command_from_user
+       description: 'HRI command issued by a user'
+       type_str: monarch_msgs/KeyValuePairArray
+       is_shared: True
+       is_latched: False
+  -
+     representative:
+       name: interacting
+       description: 'Predicate issued by the robot to inform wether it is interacting with a person.'
+       type_str: std_msgs/Bool
+       is_shared: True
+       is_latched: True
+  -
+     representative:
+       name: user_answer_to_quiz_question
+       description: 'Quiz answer from user.'
+       type_str: monarch_msgs/KeyValuePairArray
+       is_shared: True
+       is_latched: True
+  - 
+    representative:
+        name: DistributedCoverageRobotState
+        description: 'The broadcast channel for each robot to send its state'
+        type_str: std_msgs/UInt32
+        is_shared: True
+        is_latched: True
+  - 
+    representative:
+        name: DistributedCoverageVirtualCoord
+        description: 'The broadcast channel for Breitenmoser virtual coordinates'
+        type_str: std_msgs/String
+        is_shared: True
+        is_latched: True

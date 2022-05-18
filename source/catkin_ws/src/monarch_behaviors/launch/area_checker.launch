@@ -1,0 +1,15 @@
+<launch>
+
+  	<group ns="mbot01">
+
+  		<!-- TF REMAP -->
+    	<remap from="/tf" to="/mbot01/tf"/>
+
+		<node name="area_checker"
+		  	pkg="monarch_behaviors"
+		  	type="area_checker"
+		  	output="screen" />
+
+	</group>
+
+</launch>

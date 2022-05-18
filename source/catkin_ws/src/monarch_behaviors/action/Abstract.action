@@ -1,0 +1,8 @@
+# Define the goal
+monarch_msgs/KeyValuePairArray goal
+---
+# Define the result
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message
+monarch_msgs/KeyValuePairArray feedback

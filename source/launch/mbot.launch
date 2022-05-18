@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<launch>
+
+
+  <group ns="$(env MBOT_NAME)">
+
+    <!-- Diagnostics -->
+    <!-- <include file="$(find monarch_diagnostics)/launch/diagnostics.launch" /> -->
+
+    <!-- SAM -->
+    <include file="$(find monarch_situational_awareness)/launch/thin_sam.launch"/>
+
+    <!-- NAVIGATION -->
+    <include file="mbot_navigation.launch" />
+
+    <!-- TF REMAP -->
+    <remap from="/tf" to="/$(env MBOT_NAME)/tf"/>
+
+    <!-- OWN TF SAM BROADCASTER -->
+    <node pkg="graph_based_formations" 
+        type="pose_tf_broadcaster.py"
+        name="pose_tf_broadcaster"/>
+
+    <!-- GRAPH-BASED FORMATION CONTROL -->
+    <!-- <node pkg="graph_based_formations"
+        type="formation_control.py"
+        name="formation_control"
+        output="screen"/> -->
+      
+    <!-- LOCAL BEHAVIOR MANAGER -->
+    <!-- <include file="$(find monarch_behaviors)/launch/mbot_behaviors.launch" />
+    <node name="local_behavior_manager"
+          pkg="monarch_behaviors"
+          type="local_behavior_manager.py"
+          output="screen"/> -->
+
+    <!-- INTERACTION MANAGER -->
+    <!-- <include file="$(find dialog_manager)/launch/mbot_interaction_manager.launch">
+        <arg name="atoms" value="default_atoms.xml"/>
+        <arg name="init_file" value="init_CAs.xml" />
+        <arg name="loop_rate" value="0.1"/> 
+    </include> -->
+
+    <!-- <include file="$(find interaction_executor_manager)/launch/interaction_executor.launch">
+        <arg name="robot" value="$(env MBOT_NAME)" />
+    </include> -->
+
+    <!-- RFID NODE -->
+    <!-- <node name="rfid_tag"
+          pkg="rfid_node"
+          type="rfid_node.py" /> -->
+	
+  </group>
+
+</launch>

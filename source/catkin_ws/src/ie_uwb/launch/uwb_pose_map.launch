@@ -1,0 +1,41 @@
+<launch>
+	<!-- setting anchors position through yaml file -->
+	<!-- setting tags position (w.r.t. origin) through yaml file -->
+	
+	<rosparam file="$(find ie_uwb)/config_files/anchors_pos_table.yaml" ns="anchors" />
+	<rosparam file="$(find ie_uwb)/config_files/tags_config.yaml" ns="tags_config" />
+	<rosparam file="$(find ie_uwb)/config_files/map_file.yaml" ns="map_config" />
+	
+	<rosparam param="world_frame">map</rosparam>
+
+
+	<!-- launching system for tag0 -->
+	
+	<node name="driver0" pkg="ie_uwb" type="driver.py" output="screen"> 
+	<param name="id" value="BACK" />
+	<param name="src" value="/dev/ttyUSB0" />
+	</node>
+	
+	<node name="uwb_filtering0" pkg="ie_uwb" type="filter.py" output="screen">
+	<param name="id" value="BACK" />
+	</node>
+	
+	<node name="uwb_triang0" 
+		pkg="ie_uwb" 
+		type="CoupleTrilateration.py" 
+		output="screen" 
+		args="/tf:=/tag_BACK/tf" >
+		<param name="id" value="BACK" />
+		<param name="tf" value="uwb_base_link" />
+		<param name="estimate_variance" value="True" />
+	</node> 
+	
+	<!-- plotting -->	
+
+	<node name="uwb_plotting0" pkg="ie_uwb" type="uwb_plotting.py" output="screen">
+		<param name="map_file_directory" value="$(find ie_uwb)/config_files/" />
+		<param name="tracked_ids" value="uwb_tag01" />
+	</node>
+
+
+</launch>

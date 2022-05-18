@@ -1,0 +1,10 @@
+<launch>
+
+    <!-- LOCAL BEHAVIOR MANAGER -->
+    <include file="$(find monarch_behaviors)/launch/mbot_behaviors.launch" />
+    <node name="local_behavior_manager"
+          pkg="monarch_behaviors"
+          type="local_behavior_manager.py"
+          output="screen"/>
+
+</launch>

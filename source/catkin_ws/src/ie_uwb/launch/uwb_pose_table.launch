@@ -1,0 +1,32 @@
+<launch>
+	
+	<!-- UWB POSE ESTIMATION COUPLED-->
+
+	<!-- setting anchors position through yaml file -->
+	
+	<rosparam file="$(find ie_uwb)/config_files/anchors_pos_table.yaml" ns="anchors" />
+	<rosparam file="$(find ie_uwb)/config_files/tags_config.yaml" ns="tags_config" />
+	<rosparam param="world_frame">map</rosparam>
+
+	<!-- launching a node for tag0 -->
+	
+	<node name="driver0" pkg="ie_uwb" type="driver.py" output="screen"> 
+	<param name="id" value="BACK" />
+	<param name="src" value="/dev/ttyUSB0" />
+	</node>
+
+	
+	<node name="uwb_filtering0" pkg="ie_uwb" type="filter.py" output="screen">
+	<param name="id" value="BACK" />
+	</node>
+	
+	<!-- <param name="id" value="FRONT,BACK" /> -->
+	<node name="uwb_triang" pkg="ie_uwb" type="CoupleTrilateration.py" output="screen" args="/tf:=/tag_BACK/tf" >
+	<param name="id" value="BACK" />
+	<param name="tf" value="uwb_base_link" />
+	<param name="estimate_variance" value="True" />
+	</node> 
+	
+	
+
+</launch>

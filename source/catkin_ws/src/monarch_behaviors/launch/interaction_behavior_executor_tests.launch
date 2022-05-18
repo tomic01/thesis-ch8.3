@@ -1,0 +1,15 @@
+<launch>
+	<group ns="mbot02">
+	 	<node name="interaction_behavior_executor"
+              pkg="monarch_behaviors"
+              type="interaction_behavior_executor.py"
+              output="screen"/>
+        <!--
+        <node name="axclient"
+              pkg="actionlib"
+              type="axclient.py"
+              output="screen"
+              args="interaction_behavior_executor"/>
+        -->
+	</group>
+</launch>

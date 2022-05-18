@@ -1,0 +1,5 @@
+geometry_msgs/Point[] area_points
+geometry_msgs/Point[] nav_points
+---
+bool area_empty
+---

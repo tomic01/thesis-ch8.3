@@ -1,0 +1,54 @@
+﻿
+### USING Kio TAG WITH A COMPUTER
+
+To run Kio UWB in the package ie_uwb:
+
+1. Connect 3 anchors (type A, B, C) to power
+2. Plug the tag to the computer with a USB, check which port it uses (e.g. /dev/ttyUSB0). You can use this command to detect the port of the tag device (first run the command, after that plug the device) 	
+	udevadm monitor --udev
+
+3. roslaunch ie_uwb uwb_pose.launch
+
+
+### PACKAGE DESCRIPTION
+
+1. uwb_pose.launch
+	- takes the name of the device (SRC), either IP, or usb device (e.g. /dev/ttyUSB0) and ID of the tag
+	- launch file starts 3 nodes
+		driver.py 
+		filter.py
+		CoupleTrilateration.py
+
+2. driver.py
+	- depending on SRC, launches Uwb.py or Wifi_Uwb.py
+	- Uwb.py is a driver, checks the serial port, from which it gets readings
+	- gets readings from Uwb.py (only if 3 anchors are detected, else False)
+	- publishes on topic /tag_ID/uwb_raw
+
+3. filter.py
+	- reads topic /tag_ID/uwb_raw
+	- Uses sliding window to find mean and variance of the data (on distance)
+	- publishes on /tag_ID/uwb_filtered
+4. CoupleTrilateration.py
+	- publishes on uwb_robot/Pose_LSQ
+	- estimate_variance -- set this parameter to estimate also the variance
+	- config_tags() --> data structure tags_global={} with position + variances + distances
+	- listener() --> subscriber for topic /uwb_filtered, saves data to tags_global{}
+	- estimate_robot_pos() - new tread
+		- 
+		- 
+		- 
+		- 
+		- 
+		- 
+
+
+
+
+
+
+
+
+
+
+

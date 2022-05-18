@@ -1,0 +1,6 @@
+<launch>
+	
+<node name="instActivation" pkg="inst_aware_planner_pkg" type="activateInst.py">
+</node>
+
+</launch>

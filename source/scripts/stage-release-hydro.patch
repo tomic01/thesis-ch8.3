@@ -1,0 +1,15 @@
+diff --git a/libstage/model_position.cc b/libstage/model_position.cc
+index ee7e0af..f38ab44 100644
+--- a/libstage/model_position.cc
++++ b/libstage/model_position.cc
+@@ -515,8 +515,8 @@ void ModelPosition::Update( void  )
+ 	double dx = (vel.x * dt) * (1.0 + integration_error.x );
+ 	double dy = (vel.y * dt) * (1.0 + integration_error.y );
+ 		  
+-	est_pose.x += dx * cosa + dy * sina;
+-	est_pose.y -= dy * cosa - dx * sina;
++	est_pose.x += dx * cosa - dy * sina;
++	est_pose.y += dx * sina + dy * cosa;
+       }
+       break;
+ 		

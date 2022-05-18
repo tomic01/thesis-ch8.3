@@ -1,0 +1,12 @@
+# Define the goal
+#string location
+monarch_msgs/KeyValuePairArray goal
+---
+# Define the result
+#bool reached
+#uint32 count
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message
+#uint32 count
+monarch_msgs/KeyValuePairArray feedback

@@ -1,0 +1,19 @@
+#!/bin/sh
+# External, ROS and system package dependencies
+
+type hg >/dev/null 2>&1 && echo "Mercurial already installed." || sudo apt-get install mercurial
+cd /tmp
+hg clone https://re2.googlecode.com/hg re2
+cd re2
+#### fixing a bug in Makefile
+grep -n 'ln -sf libre2.so.$(SONAME).0.0 $(DESTDIR)$(libdir)/libre2.so' Makefile | grep "254"
+if [ $? -eq 0 ]
+then
+    sed -i'' '254 s/^/#/' Makefile
+fi
+#### bug section end
+make -j
+#make test
+sudo make install
+#make testinstall
+

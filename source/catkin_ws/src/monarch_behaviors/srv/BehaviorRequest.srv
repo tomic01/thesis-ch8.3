@@ -1,0 +1,5 @@
+# BehaviorSelection message with all relevant information about behavior execution/cancelation
+monarch_msgs/BehaviorSelection behavior
+---
+# true if request was successfully processed (behavior activated or canceled)
+bool success

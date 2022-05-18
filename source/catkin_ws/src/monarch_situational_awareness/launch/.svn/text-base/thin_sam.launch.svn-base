@@ -1,0 +1,53 @@
+<launch>
+    <arg name="repo" default="$(find monarch_situational_awareness)/config/slot_config.yaml"/>
+
+    <param name="repo" type="string" value="$(arg repo)"/>
+
+    <node name="master_discovery" pkg="master_discovery_fkie" type="master_discovery" output="screen">
+         <rosparam command="load" file="$(find monarch_situational_awareness)/config/robot_hosts.yaml"/>
+    </node>
+    
+    <node name="master_sync" pkg="master_sync_fkie" type="master_sync" output="screen">
+        <rosparam param="ignore_nodes">[]</rosparam>
+        <rosparam param="sync_topics">["/*sar*"]</rosparam>
+    </node>
+
+    <node name="thin_sam" type="thin_sam" pkg="monarch_situational_awareness" args="$(arg repo)" output="screen" respawn="true">
+        <rosparam command="load" file="$(find monarch_situational_awareness)/config/default_group_hosts.yaml"/>
+    </node>
+
+    <node name="relay_rfid"
+        type="relay"
+        pkg="topic_tools"
+        args="/$(env MBOT_NAME)/rfid_tag /sar/$(env MBOT_NAME)/RFIDReading">
+    </node>
+
+    <node name="relay_batteries"
+        type="relay"
+        pkg="topic_tools"
+        args="/$(env MBOT_NAME)/batteries_voltage /sar/$(env MBOT_NAME)/BatteriesVoltage">
+    </node>
+
+    <!-- Nodes that publish required interaction topics to SAM -->
+    <!-- Command From User SAM Writer -->
+    <node name="command_from_user_sam_publisher"
+          pkg="monarch_multimodal_fission"
+          type="command_from_user_sam_publisher.py"
+          respawn="false"
+          output="screen"/>
+
+    <!-- Is Robot Interacting Predicate SAM Writer -->
+    <node name="is_robot_interacting_sam_publisher"
+          pkg="monarch_multimodal_fission"
+          type="is_robot_interacting_sam_publisher.py"
+          respawn="false"
+          output="screen"/>
+
+    <!-- User Answer to Quiz Question SAM Notifier --> 
+    <node name="answer_to_quiz_question_sam_publisher"
+          pkg="monarch_multimodal_fission"
+          type="answer_to_quiz_question_sam_publisher.py"
+          respawn="false"
+          output="screen"/>
+
+</launch>

@@ -1,0 +1,15 @@
+<launch>
+
+    <!-- SAM -->
+    <include file="$(find monarch_situational_awareness)/launch/sam.launch" />
+
+  	<group ns="mcentral">
+
+		<node name="global_behavior_manager"
+		  	pkg="monarch_behaviors"
+		  	type="global_behavior_manager.py"
+		  	output="screen" />
+
+	</group>
+
+</launch>

@@ -1,0 +1,24 @@
+---Download:
+
+https://www.raspberrypi.org/downloads/raspbian/
+
+---Install:
+
+https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
+https://www.raspberrypi.org/documentation/installation/installing-images/README.md
+
+OR use NOOBS (easier?):
+https://www.raspberrypi.org/documentation/installation/noobs.md
+
+---After install 
+
+startx
+
+---Install ROS Indigo:
+
+http://wiki.ros.org/ROSberryPi/Installing%20ROS%20Indigo%20on%20Raspberry%20Pi
+
+
+
+
+

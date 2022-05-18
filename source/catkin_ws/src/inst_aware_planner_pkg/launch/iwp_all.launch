@@ -1,0 +1,38 @@
+<launch>
+  <arg name="inst1" default="Guiding"/>
+  <arg name="inst2" default="Touring"/>
+  <arg name="grounding_i1" default="default"/>
+  <arg name="grounding_i2" default="default"/>
+  
+
+  <node name="inst_aware_planner_$(arg inst1)"
+		pkg="inst_aware_planner_pkg"
+		type="runnerInstitutions.sh"
+		args="se.oru.inst_aware_planner_pkg.inst_aware_planner.csp.InstitutionNode"
+		output="screen">
+
+		<env name="INST" value="$(arg inst1)" />
+		<env name="GROUNDING_I1" value="$(arg grounding_i1)" />
+		<env name="GROUNDING_I2" value="$(arg grounding_i2)" />
+
+		<param name="iwp_pkg_path" value="$(find inst_aware_planner_pkg)" />
+  </node>
+
+  <node name="inst_aware_planner_$(arg inst2)"
+		pkg="inst_aware_planner_pkg"
+		type="runnerInstitutions.sh"
+		args="se.oru.inst_aware_planner_pkg.inst_aware_planner.csp.InstitutionNode"
+		output="screen">
+
+		<env name="INST" value="$(arg inst2)" />
+		<env name="GROUNDING_I1" value="$(arg grounding_i1)" />
+		<env name="GROUNDING_I2" value="$(arg grounding_i2)" />
+
+		<param name="iwp_pkg_path" value="$(find inst_aware_planner_pkg)" />
+  </node>
+
+  <node name="instActivation" pkg="inst_aware_planner_pkg" type="activateInst.py">
+		
+  </node>
+
+</launch>

@@ -1,0 +1,7 @@
+# Define the goal
+---
+# Define the result
+#bool docked
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message

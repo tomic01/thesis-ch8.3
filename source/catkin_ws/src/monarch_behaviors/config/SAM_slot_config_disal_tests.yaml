@@ -1,0 +1,165 @@
+slots: 
+  - 
+    name: MBot01ExecuteBehavior
+    description: 'Used by GBM to send behavior execution command to MBot01'
+    type_str: monarch_msgs/BehaviorSelection
+    is_shared: True
+    is_latched: False
+  -
+    name: MBot02ExecuteBehavior
+    description: 'Used by GBM to send behavior execution command to MBot02'
+    type_str: monarch_msgs/BehaviorSelection
+    is_shared: True
+    is_latched: False
+  -
+    name: MBot03ExecuteBehavior
+    description: 'Used by GBM to send behavior execution command to MBot03'
+    type_str: monarch_msgs/BehaviorSelection
+    is_shared: True
+    is_latched: False
+  -
+    name: MBot04ExecuteBehavior
+    description: 'Used by GBM to send behavior execution command to MBot03'
+    type_str: monarch_msgs/BehaviorSelection
+    is_shared: True
+    is_latched: False
+  -
+    name: MBot08ExecuteBehavior
+    description: 'Used by GBM to send behavior execution command to MBot03'
+    type_str: monarch_msgs/BehaviorSelection
+    is_shared: True
+    is_latched: False
+  -
+    name: MBot01CurrentExecutingBehaviors
+    description: 'Used by LBM to let SAP and GBM what behavior MBot01 is executing'
+    type_str: monarch_msgs/BehaviorSelectionArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot01CurrentBehaviorFeedback
+    description: 'Used by LBM to let SAP and GBM the feedback from the behavior MBot01 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot01CurrentBehaviorResult
+    description: 'Used by LBM to let SAP and GBM the result from the behavior MBot01 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot02CurrentExecutingBehaviors
+    description: 'Used by LBM to let SAP and GBM what behavior MBot02 is executing'
+    type_str: monarch_msgs/BehaviorSelectionArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot02CurrentBehaviorFeedback
+    description: 'Used by LBM to let SAP and GBM the feedback from the behavior MBot02 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot02CurrentBehaviorResult
+    description: 'Used by LBM to let SAP and GBM the result from the behavior MBot02 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot03CurrentExecutingBehaviors
+    description: 'Used by LBM to let SAP and GBM what behavior MBot03 is executing'
+    type_str: monarch_msgs/BehaviorSelectionArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot03CurrentBehaviorFeedback
+    description: 'Used by LBM to let SAP and GBM the feedback from the behavior MBot03 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot03CurrentBehaviorResult
+    description: 'Used by LBM to let SAP and GBM the result from the behavior MBot03 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot04CurrentExecutingBehaviors
+    description: 'Used by LBM to let SAP and GBM what behavior MBot04 is executing'
+    type_str: monarch_msgs/BehaviorSelectionArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot04CurrentBehaviorFeedback
+    description: 'Used by LBM to let SAP and GBM the feedback from the behavior MBot04 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot04CurrentBehaviorResult
+    description: 'Used by LBM to let SAP and GBM the result from the behavior MBot04 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot08CurrentExecutingBehaviors
+    description: 'Used by LBM to let SAP and GBM what behavior MBot08 is executing'
+    type_str: monarch_msgs/BehaviorSelectionArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot08CurrentBehaviorFeedback
+    description: 'Used by LBM to let SAP and GBM the feedback from the behavior MBot08 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  -
+    name: MBot08CurrentBehaviorResult
+    description: 'Used by LBM to let SAP and GBM the result from the behavior MBot08 is executing'
+    type_str: monarch_msgs/KeyValuePairArray
+    is_shared: True
+    is_latched: True
+  - 
+    name: People_Localization_Tracker  
+    description: 'Location of the People in the setup'
+    type_str: monarch_msgs/PersonLocalizationTrackingDataArray
+    is_shared: False
+    is_latched: False
+
+groups: 
+  - 
+     hosts: ['mbot01', 'mbot02', 'mbot03', 'mbot04'] 
+
+     representative: 
+       name: Robot_Pose
+       description: 'Get MBOT pose from AMCL localization to form collective state estimate'
+       type_str: geometry_msgs/PoseWithCovarianceStamped 
+       is_shared: True
+       is_latched: True
+  - 
+     hosts: ['mbot01', 'mbot02', 'mbot03', 'mbot04'] 
+
+     representative: 
+       name: Robot_CmdVel
+       description: 'Get MBOT cmd_vel'
+       type_str: geometry_msgs/Twist
+       is_shared: True
+       is_latched: True     
+  - 
+     hosts: ['mbot01', 'mbot02', 'mbot03', 'mbot04'] 
+
+     representative: 
+       name: Robot_GroundTruthPosition
+       description: 'Get MBOT GroundTruthPosition'
+       type_str: geometry_msgs/PoseWithCovarianceStamped
+       is_shared: True
+       is_latched: True   
+  - 
+     hosts: ['mbot01', 'mbot02', 'mbot03', 'mbot04'] 
+
+     representative: 
+       name: tfPose
+       description: 'Pose obtained from map->base link tf'
+       type_str: geometry_msgs/Pose
+       is_shared: True
+       is_latched: True

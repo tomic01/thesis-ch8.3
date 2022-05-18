@@ -1,0 +1,16 @@
+Version 0.1.5
+- deleted EmotionExpression.msg since it was replaced by GestureExpression.msg
+
+Version 0.1.4
+- added VideoProjectoControl.msg
+- added UC3M msgs: ScreenButton.msg , ScreenInterfaceInputConfig.msg
+
+Version 0.1.3
+- added PersonFrontRobot.msg array
+- IW2 final code
+
+Version 0.1.2
+- added comments to monarch_msgs: HeadControl, LedControl, MouthLedControl
+
+Version 0.1.1
+- added messages related to windows-connected hardware: ArmsControl, CapacitiveSensorControl, CapacitiveSensorReadings, HeadControl, LedControl, MouthLedControl

@@ -1,0 +1,7 @@
+# Define the goal
+---
+# Define the result
+#bool game_area_empty
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message

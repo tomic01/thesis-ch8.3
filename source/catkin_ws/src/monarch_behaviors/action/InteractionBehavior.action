@@ -1,0 +1,15 @@
+# Goal Fields
+#int32 user_id
+# Communicative Act that the Interaction Manager must execute
+#string communicative_act
+monarch_msgs/KeyValuePairArray goal
+---
+# Result Fields
+# Predicate that indicates if the user has responded to the interaction attempt
+#bool user_responded  
+monarch_msgs/KeyValuePairArray result
+---
+# Feedback message Fields
+# Predicate that indicates if the user is engaged in the interaction
+#bool user_engaged
+monarch_msgs/KeyValuePairArray feedback    

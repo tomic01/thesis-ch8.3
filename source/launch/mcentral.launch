@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <group ns="mcentral">
+	
+     <!-- REMAPPING TF -->
+     <remap from="/tf" to="/mcentral/tf"/>
+
+
+    <!-- Diagnostics -->
+    <!-- <include file="$(find monarch_diagnostics)/launch/diagnostics.launch" /> -->
+
+    <!-- Fixed Cameras -->
+    <!-- TODO -->
+
+    <!-- thin SAM -->
+    <include file="$(find monarch_situational_awareness)/launch/thin_sam.launch" />
+
+    <!-- PERCEPTION -->
+    <!-- <include file="$(find monarch_perception)/peopleloc.launch" />
+    <include file="$(find monarch_perception)/robotloc.launch" /> -->
+
+
+    <!-- Global Behavior Manager -->
+    <node name="global_behavior_manager"
+          pkg="monarch_behaviors"
+          type="global_behavior_manager.py"
+          output="screen">
+      <rosparam command="load" file="$(find monarch_situational_awareness)/config/agent_names.yaml"/>
+    </node>
+
+    <!-- LOCAL BEHAVIOR MANAGER -->
+    <include file="$(find monarch_behaviors)/launch/mbot_behaviors_mcentral.launch" />
+    <node name="local_behavior_manager"
+          pkg="monarch_behaviors"
+          type="local_behavior_manager.py"
+          output="screen"/>
+
+    <!-- FLOW FREE GAME CORE -->
+    <!-- <include file="$(find flowfree_game)/launch/flowfree_ISR.launch" /> -->
+
+    <!-- GUI -->
+    <!-- <node name="runtime_monitor" pkg="rqt_runtime_monitor" type="rqt_runtime_monitor" />
+    <node name="robot_monitor" pkg="rqt_robot_monitor" type="rqt_robot_monitor" /> -->
+
+
+     <!-- REMAPPING TAGS TO SAM -->
+     <node name="tag01_relay" pkg="topic_tools" type="relay" args="/uwb_tag01/Pose_LSQ /sar/tag01" />
+     <node name="tag02_relay" pkg="topic_tools" type="relay" args="/uwb_tag02/Pose_LSQ /sar/tag02" />
+     <node name="tag03_relay" pkg="topic_tools" type="relay" args="/uwb_tag03/Pose_LSQ /sar/tag03" />
+
+     <!-- REMAPPING PEPPER FROM SAM -->
+     <node name="pepper_relay" pkg="topic_tools" type="relay" args="/sar/nao/behavior_selection /pepper/behavior_selection" />
+
+     <node name="oru_bag" pkg="rosbag" type="record" 
+	args="-o /home/monarch/Experiments/Bags/Exp /sar/tag01 /sar/tag02 /sar/tag03 /sar/mbot03/tfPose /sar/mbot11/tfPose" />
+
+  </group>
+
+</launch>

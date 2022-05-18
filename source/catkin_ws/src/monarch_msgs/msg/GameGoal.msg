@@ -1,0 +1,2 @@
+move_base_msgs/MoveBaseGoal goal
+float32 clearanceRadius

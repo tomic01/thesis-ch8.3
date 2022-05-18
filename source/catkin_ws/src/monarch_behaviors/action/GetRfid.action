@@ -1,0 +1,11 @@
+# Define the goal
+#uint32 camera_id
+
+monarch_msgs/KeyValuePairArray goal
+
+---
+# Define the result
+#bool reached
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message

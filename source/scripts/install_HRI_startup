@@ -1,0 +1,28 @@
+#!/bin/bash
+# Install hri launch on startup
+
+export LC_ALL="en_US.UTF-8"
+source /opt/ros/hydro/setup.bash
+ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)/`basename "${BASH_SOURCE[0]}"`
+ABS_DIR=`dirname $ABSOLUTE_PATH`
+ROOT_DIR=`echo $ABS_DIR | sed s%/scripts%%`
+echo "Root dir = $ROOT_DIR"
+
+source $CATKIN_WS/devel/setup.bash
+export ROS_PACKAGE_PATH=$ROSBUILD_WS:$ROS_PACKAGE_PATH
+
+echo "Installing hri launch on startup..."
+
+
+MBOT_NAME=$MBOT_NAME
+
+# HRI launch on startup
+cd $ROOT_DIR/scripts
+./setupTouchScreen.sh
+
+sleep 3
+cd $ROOT_DIR/launch
+echo "Starting HRI software..."
+./launch_mbot_hri_startup.bash & disown
+
+exit 0

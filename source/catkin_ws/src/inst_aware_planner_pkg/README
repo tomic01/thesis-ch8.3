@@ -1,0 +1,60 @@
+inst_aware_planner:
+
+Contains institution framework (I,D,G). It creates planning domain
+files (*.ddl) from institution specification, thus implementing:
+
+1. Obligation or 'must' norms as the requirements (or goals) that have to be achieved
+2. 'Use' norms as the parameters of the robot's behaviors
+3. Temporal norms as the Allan's Interval Constraints.
+
+An institution is an operator represented as meta-CSP context
+variable, with the value <institution_name>. The body of the operators
+implements listed norms.  The advantage of creating .ddl specification
+of institution, is that existing domain files can be extended, thus
+merging institution requirements to the existing robot ontology.
+
+
+Additional notes:
+
+a.) Resources are not taken into account.
+
+b.) Does more complex case of an institution leads to more than one
+context variable
+
+c.) Future work: In case of multiple institutions, each institution
+represents different value for the 'Institution' context variable. Or
+if they can be activated in the same time, then they should have
+different variables... (TODO: starting point to investigate multiple
+institutions, test)
+
+d.) Further experiments: Use spatial reasoning in meta-CSP
+
+TODO: When the case is simple, goal (requirement) is simply a behavior
+that can be executed when needed, but in more complex case, robots
+will have to plan for additional behaviors in order to achieve this
+goal. It would be very useful to show this in (simulated?) experiment.
+
+
+The package:
+
+There are two institutions: Guiding and Touring.
+
+There are 4 groundings, two for the Guiding and two for Touring.
+
+Institutions are started in sequence. Planner node is started two
+times, so that each node takes care of one institution.
+
+Run both institution with default grounding:
+
+roslaunch inst_aware_planner_pkg iwp_all.launch
+
+Run both institution with different grounding (different waypoints) used in the experiments:
+
+roslaunch inst_aware_planner_pkg iwpExp2.launch
+
+Note: the grounding can be changed in the launch files
+
+
+
+
+

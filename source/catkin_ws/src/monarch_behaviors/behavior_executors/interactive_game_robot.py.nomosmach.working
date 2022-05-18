@@ -1,0 +1,235 @@
+#! /usr/bin/env python
+
+# Behavior implemented: interactive_game
+# Author: Lorenzo Sarti
+# Description: interactive_game is a behavior designed for activating the state mahchine
+#				on the robot involved in tha games which takes care of handling all the 
+#				goals sent by the game core that runs on the mcentral machine. This state 
+#				also provides navigation feedbacks via SAM slots to the game core which 
+#				keeps track of the state of the game.			 
+
+import roslib; roslib.load_manifest('monarch_behaviors')
+import rospy
+import smach
+import smach_ros
+from smach_ros import simple_action_state
+from move_base_msgs.msg import *
+
+from std_msgs.msg import Int16, Header
+from geometry_msgs.msg import PoseStamped, Pose, Point, Quaternion
+import math
+from functools import partial
+from sam_helpers.reader import SAMReader
+from sam_helpers.writer import SAMWriter
+from monarch_situational_awareness.srv import RemoveReader
+
+from monarch_behaviors.msg import InteractiveGameRobotAction
+
+
+# define state checkGoal
+class checkGoal(smach.State):
+	""" This state registers a callback on the SAM slot in order to receive Goals. 
+		If the goal is valid then it transition to the actionlib client that sends 
+		the received goal to the navigation system.   """
+
+	def __init__(self):
+		smach.State.__init__(self, outcomes=['valid','preempted'], input_keys=['goal_in'], output_keys=['goal_out'])
+		self.goalReceived = False
+		self.goalReader = None
+
+	def receiveGoal_cb(self, data, extra):
+
+		if extra.goal_in != data.target_pose:
+			self.goalReceived = True
+			extra.goal_out = data.target_pose
+
+	def isGoalValid(self, goal):
+
+		if goal.pose.position.x < -500 and \
+			goal.pose.position.y < -500:
+			return False
+		return True
+
+	def execute(self, userdata):
+		rospy.loginfo('Executing state CHECKGOAL')
+
+		robot_id = rospy.get_namespace()
+		robot_id = robot_id.strip('/')
+
+		self.goalReader = SAMReader("["+robot_id+"] flowfreeGoal", partial(self.receiveGoal_cb, extra = userdata))
+		r = rospy.Rate(2)
+
+		while not rospy.is_shutdown():
+
+			if self.preempt_requested():
+				self.service_preempt()
+				self.goalReader.remove()
+				return 'preempted'
+
+			if self.goalReceived and self.isGoalValid(userdata.goal_in):
+				self.goalReceived = False
+				return 'valid'
+			self.goalReceived = False
+			r.sleep()
+
+# define state watchState
+class watchState(smach.State):
+	""" This state runs concurrently with the SM HANDLEGOAL and registers a callback
+		on the SAM slot that receives the goal. This state provides navigation feedbacks
+		to the game core running on mcentral"""
+
+	def __init__(self):
+		smach.State.__init__(self, outcomes=['preempted'], input_keys=['feedback_in','goal_in'], output_keys=['goal_out', 'feedback_out'])
+		self.newGoalReceived = False
+		self.goalActive = False
+		self.goalReader = None
+		self.feedbackWriter = None
+
+	def receiveGoal_cb(self, data, extra):
+
+		if extra.goal_in != data.target_pose:
+			self.newGoalReceived = True
+			extra.goal_out = data.target_pose
+
+	def isGoalValid(self, goal):
+		if goal.pose.position.x < -500 and \
+			goal.pose.position.y < -500:
+			return False 
+		return True
+
+	def execute(self, userdata):
+		rospy.loginfo('Executing state WATCHSTATE')
+
+		robot_id = rospy.get_namespace()
+		robot_id = robot_id.strip('/')
+		self.goalReader = SAMReader("["+robot_id+"] flowfreeGoal", partial(self.receiveGoal_cb, extra = userdata))
+		self.feedbackWriter = SAMWriter("["+robot_id+"] flowfreeGoalFeedback") 
+
+		r = rospy.Rate(2)
+
+		while not rospy.is_shutdown():
+
+			if self.newGoalReceived and self.isGoalValid(userdata.goal_in):
+				self.newGoalReceived = False
+				userdata.feedback_out = 'Active'
+
+			elif self.newGoalReceived and not self.isGoalValid(userdata.goal_in):
+				self.newGoalReceived = False
+				userdata.feedback_out = 'NoGoal'
+
+			elif self.preempt_requested():
+				self.service_preempt()
+
+				self.goalReader.remove()
+				self.feedbackWriter.remove()
+				
+				return 'preempted'
+
+			#publish feedback
+			self.feedbackWriter.publish(userdata.feedback_in)
+			r.sleep()
+
+#####
+
+def child_term_cb(outcome_map):
+
+	if outcome_map['HANDLEGOAL']:
+		return True
+
+
+def pose2pose_stamped(x, y, t):
+  pose_stamped = PoseStamped(header=Header(frame_id="/map"),
+                      pose=Pose(position=Point(x, y, 0),
+                        orientation=Quaternion(0, 0, math.sin(t/2.0), math.cos(t/2.0))))
+  return pose_stamped
+
+def action_result_cb(userdata, status, result):
+
+	if status == simple_action_state.GoalStatus.SUCCEEDED:
+		print 'Succeded'
+		userdata.action_result = 'Succeeded'
+	else:
+		userdata.action_result = 'NoGoal'
+
+#####
+
+def main():
+	rospy.init_node('behavior_game_robot')
+
+	###################################################
+	############## MAIN STATE MACHINE #################
+	###################################################
+
+	# Create the top level SMACH state machine
+	sm_top = smach.StateMachine(outcomes=['preempted'])
+	
+	with sm_top:
+
+		###################################################
+		################ CONCURRENT STATE #################
+		###################################################
+
+		sm_con = smach.Concurrence(outcomes=['succeeded','preempted'],
+								   default_outcome='preempted',
+								   outcome_map={'preempted':{'HANDLEGOAL':'preempted'},
+								   				'succeeded':{'HANDLEGOAL':'succeeded'}},
+								   child_termination_cb = child_term_cb)
+
+		sm_con.userdata.feedback = 'NoGoal'
+		sm_con.userdata.goal_sm = pose2pose_stamped(-1000, -1000, -1000)
+
+		with sm_con:
+
+			###################################################
+			######## HANDLEGOAL STATE MACHINE #################
+			###################################################
+
+			sm_goal = smach.StateMachine(outcomes=['succeeded','preempted'], input_keys=['goal_sm'], output_keys=['feedback', 'goal_sm'])
+
+			with sm_goal:
+
+				sm_goal.add('CHECKGOAL', checkGoal(), 
+										transitions={'valid':'SENDGOAL',
+													 'preempted':'preempted'},
+										remapping={'goal_in':'goal_sm',
+												   'goal_out':'goal_sm'})
+
+				sm_goal.add('SENDGOAL', smach_ros.SimpleActionState('move_base', MoveBaseAction,
+									goal_slots=['target_pose'],
+									result_cb= action_result_cb,
+									output_keys=['action_result']),
+									remapping={'target_pose':'goal_sm',
+											   'action_result':'feedback'},
+									transitions={'succeeded':'succeeded',
+											 	'aborted':'preempted',
+											 	'preempted':'preempted'})
+
+			sm_con.add('HANDLEGOAL', sm_goal)
+
+			sm_con.add('WATCHSTATE', watchState(),
+									remapping={'feedback_in':'feedback',
+											   'goal_in':'goal_sm',
+											   'feedback_out':'feedback',
+											   'goal_out':'goal_sm'})
+
+		smach.StateMachine.add('GAME_INTERFACE', sm_con,
+							   transitions={'preempted':'preempted',
+							   				'succeeded':'GAME_INTERFACE'})
+
+
+
+	action_name = rospy.get_name()  
+	asw = smach_ros.ActionServerWrapper(action_name,
+										InteractiveGameRobotAction,
+										wrapped_container = sm_top,
+										preempted_outcomes = ['preempted'])
+
+
+	sis = smach_ros.IntrospectionServer('server_name', sm_top, '/SM_MINE')
+	sis.start()
+	asw.run_server()
+	rospy.spin()
+
+
+if __name__ == '__main__':
+	main()

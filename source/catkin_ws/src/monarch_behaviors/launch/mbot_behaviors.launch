@@ -1,0 +1,122 @@
+<launch>
+
+
+<!-- Questions and answers to the Teaching Assistant (TA) Quiz game -->
+    <rosparam command="load" file="$(find uc3m_behaviors)/params/ta_quiz_params_IST.yaml" ns="ta_quiz_params"/>
+
+
+<!-- Auxiliary node(s) to behaviors -->
+
+  <node name="area_checker"
+        pkg="monarch_behaviors"
+        type="area_checker"/>
+
+<!-- All behaviors should be listed here.
+     PLEASE keep the list ordered alphabetically by node name -->
+
+  <node name="behavior_approachperson"
+      pkg="monarch_behaviors"
+      type="approach_person.py"/>
+
+  <node name="behavior_catchandtouch"
+      pkg="monarch_behaviors"
+      type="catch_n_touch_behavior_sam2.py"/>
+
+  <node name="behavior_catchandtouchback"
+      pkg="monarch_behaviors"
+      type="catch_n_touch_behaviorback_sam2.py"/>
+
+  <node name="behavior_lead"
+      pkg="monarch_behaviors"
+      type="lead_behavior_sam.py"/>
+
+  <node name="behavior_checkgamearea"
+      pkg="monarch_behaviors"
+      type="check_game_area.py"/>
+
+  <node name="behavior_cooperativepatrolling"
+      pkg="monarch_behaviors"
+      type="cooperativepatrolling.py"
+			output="screen"/>
+
+  <node name="behavior_dispatch_ca"
+      pkg="monarch_behaviors"
+      type="dispatch_ca.py"/>
+
+  <!-- <node name="behavior_distributed_coverage"
+      pkg="distributed_coverage"
+      type="distributed_coverage_controller.py"/> -->
+
+  <node name="behavior_dock"
+      pkg="monarch_behaviors"
+      type="docking.py"/>
+
+  <node name="behavior_getrfid"
+      pkg="monarch_behaviors"
+      type="getrfid_behavior_sam.py"/>
+
+  <node name="behavior_goto"
+      pkg="monarch_behaviors"
+      type="goto.py"/>
+
+  <node name="behavior_idle"
+      pkg="monarch_behaviors"
+      type="idle.py"/>
+
+  <node name="behavior_interactivegame_robot"
+      pkg="monarch_behaviors"
+      type="interactive_game_robot.py"/>
+
+  <node name="behavior_moving"
+      pkg="monarch_behaviors"
+      type="moving.py"/>
+
+  <node name="behavior_patrolling"
+      pkg="monarch_behaviors"
+      type="patrolling.py"/>
+
+  <node name="behavior_patrollingandpersondetect"
+      pkg="monarch_behaviors"
+      type="patrollingandpersondetect.py"/>
+
+  <node name="behavior_patrollingapproachinteract"
+      pkg="monarch_behaviors"
+      type="patrolling_approach_interact.py"/>
+
+  <node name="behavior_patrollingapproachinteractcamera"
+      pkg="monarch_behaviors"
+      type="patrolling_approach_interact_camera.py"/>
+
+  <node name="behavior_patrollingrfiddetect"
+      pkg="monarch_behaviors"
+      type="patrolling_rfid_detect.py"/>
+
+  <node name="behavior_patrollingandtouch"
+      pkg="monarch_behaviors"
+      type="patrollingandtouch.py"/>
+
+  <node name="behavior_ta_quiz_game"
+      pkg="monarch_behaviors"
+      type="ta_quiz_game_behavior.py"/>
+
+  <node name="behavior_teachingassistance"
+      pkg="monarch_behaviors"
+      type="teaching_assistance.py"/>
+
+  <node name="behavior_undock"
+      pkg="monarch_behaviors"
+      type="undocking.py"/>
+
+  <node name="behavior_interaction"
+      pkg="monarch_behaviors"
+      type="interaction_behavior_executor.py"/>
+
+  <node name="behavior_following"
+      pkg="monarch_behaviors"
+      type="Following.py"/>
+
+  <node name="behavior_escorting"
+      pkg="monarch_behaviors"
+      type="Escorting.py"/>
+
+</launch>

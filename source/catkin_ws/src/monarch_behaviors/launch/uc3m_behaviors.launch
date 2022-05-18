@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="map_name2" default="roboticslab_complete_clean"/>
+  <include file="$(find launch)/mbot/uc3m_mbot_navigation_tests.launch">
+        <arg name="map_name" value="$(arg map_name2)"/>
+  </include>
+
+<!-- All behaviors should be listed here.
+     PLEASE keep the list ordered alphabetically by node name -->
+  <group ns="$(env MBOT_NAME)">
+    <rosparam command="load" file="$(find config)/$(arg map_name2)_routes.yaml"/>
+    <rosparam command="load" file="$(find config)/$(arg map_name2)_places.yaml"/>
+    
+    <node name="behavior_patrolling"
+          pkg="monarch_behaviors"
+          type="uc3m_patrolling.py"/>
+
+    <node name="behavior_human_aware_patrolling"
+          pkg="monarch_behaviors"
+          type="uc3m_human_aware_patrolling.py"/>
+  
+    <node name="behavior_docking"
+          pkg="monarch_behaviors"
+          type="docking.py"/>
+  
+    <node name="behavior_undocking"
+          pkg="monarch_behaviors"
+          type="undocking.py"/>
+  
+    <node name="rfid_tag"
+          pkg="rfid_node"
+          type="rfid_node.py" />
+
+  </group>
+</launch>

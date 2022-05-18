@@ -1,0 +1,17 @@
+<launch>
+
+	<arg name="mbotName" default="mbot01" />
+
+	<group ns="$(arg mbotName)">
+
+		<!-- Local Behavior Allocator -->
+		<node name="local_behavior_allocator"
+		  pkg="monarch_behaviors"
+		  type="local_behavior_allocator.py"
+		  output="screen">
+		  <rosparam command="load" file="$(find monarch_situational_awareness)/config/agent_names.yaml"/>
+		</node>
+
+	</group>
+
+</launch>

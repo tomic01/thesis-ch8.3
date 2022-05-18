@@ -1,0 +1,5 @@
+# BehaviorSelection message with all relevant information about behavior request
+monarch_msgs/BehaviorSelection behavior
+---
+# robots is the set of robots to which the request behavior should be allocated
+int16[] robots

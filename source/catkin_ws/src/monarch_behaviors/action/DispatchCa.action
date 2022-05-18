@@ -1,0 +1,9 @@
+# Goal Fields
+# CHECK INTERACTION MANAGER MESSAGE MAPPING (CHECK WITH VICTOR GONZALEZ IF NEEDED)
+monarch_msgs/KeyValuePairArray goal
+---
+# Result Fields  
+monarch_msgs/KeyValuePairArray result
+---
+# Feedback message Fields
+monarch_msgs/KeyValuePairArray feedback    

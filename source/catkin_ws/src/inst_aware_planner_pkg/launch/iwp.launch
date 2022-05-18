@@ -1,0 +1,14 @@
+<launch>
+  <arg name="inst" default="Guiding"/>
+  <env name="INST" value="$(arg inst)" />
+
+  <node name="inst_aware_planner_$(arg inst)"
+		pkg="inst_aware_planner_pkg"
+		type="runnerInstitutions.sh"
+		args="se.oru.inst_aware_planner_pkg.inst_aware_planner.csp.InstitutionNode"
+		output="screen">
+
+		<param name="iwp_pkg_path" value="$(find inst_aware_planner_pkg)" />
+  </node>
+
+</launch>

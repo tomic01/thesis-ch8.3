@@ -1,0 +1,7 @@
+SUBSYSTEMS=="usb",ATTRS{idProduct}=="6001",ATTRS{idVendor}=="0403",ATTRS{serial}=="board1",SYMLINK+="mbot-sensorboard",GROUP="dialout"
+SUBSYSTEMS=="usb",ATTRS{idProduct}=="6001",ATTRS{idVendor}=="0403",ATTRS{serial}=="board2",SYMLINK+="mbot-motorboard",GROUP="dialout"
+SUBSYSTEMS=="usb",ATTRS{idProduct}=="6001",ATTRS{idVendor}=="0403",ATTRS{serial}=="board3",SYMLINK+="mbot-interactionboard",GROUP="dialout"
+SUBSYSTEMS=="usb",ATTRS{idProduct}=="6001",ATTRS{idVendor}=="0403",ATTRS{serial}=="board4",SYMLINK+="mbot-amrsboard",GROUP="dialout"
+SUBSYSTEMS=="usb",ATTRS{idProduct}=="2303",ATTRS{idVendor}=="067b",SYMLINK+="mbot-rfidreader",GROUP="dialout"
+SUBSYSTEMS=="usb",KERNEL=="ttyACM[0-9]*",ATTRS{idProduct}=="8036",ATTRS{idVendor}=="2341",SYMLINK+="mbot-imu",GROUP="dialout"
+SUBSYSTEMS=="usb",KERNEL=="ttyACM[0-9]*",ACTION=="add",ATTRS{idVendor}=="15d1",ATTRS{idProduct}=="0000",PROGRAM="/opt/mbot_ros/share/mbot_ros/mbot_hokuyo.sh /dev/%k q",SYMLINK+="mbot-hokuyo-%c",GROUP="dialout",event_timeout=60

@@ -1,0 +1,16 @@
+
+#goal definition
+#string[] players
+#int32 rows
+#int32 cols
+#int32 level
+#bool tracking
+monarch_msgs/KeyValuePairArray goal
+---
+# Define the result
+#bool complete
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message
+#int32 phase
+monarch_msgs/KeyValuePairArray feedback

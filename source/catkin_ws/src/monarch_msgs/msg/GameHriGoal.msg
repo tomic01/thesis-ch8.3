@@ -1,0 +1,3 @@
+string interaction_type
+string interaction
+geometry_msgs/PoseStamped pose

@@ -1,0 +1,25 @@
+#! /usr/bin/env python
+import rospy
+import roslib.message
+import functools
+import sys
+import std_msgs.msg
+from sam_helpers.writer import SAMWriter
+from monarch_msgs.msg import KeyValuePair, KeyValuePairArray
+
+if __name__ == '__main__':
+    rospy.init_node('slot_writer', anonymous=True)
+    
+    writer = SAMWriter('command_from_user', agent_name = 'mbot05')
+
+    message = KeyValuePairArray()
+
+    kvp = KeyValuePair()
+    kvp.key = 'storyboard'
+    kvp.value = 'teaching_assistant'
+
+    message.array.append(kvp)
+
+    rospy.sleep(1)
+    writer.publish(message)
+    rospy.sleep(1)

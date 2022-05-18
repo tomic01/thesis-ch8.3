@@ -1,0 +1,10 @@
+<launch>
+
+<!-- All behaviors should be listed here.
+     PLEASE keep the list ordered alphabetically by node name -->
+
+  <node name="behavior_idle"
+      pkg="monarch_behaviors"
+      type="idle.py"/>
+
+</launch>

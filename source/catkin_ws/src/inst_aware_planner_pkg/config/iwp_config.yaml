@@ -1,0 +1,28 @@
+# TODO:
+
+BehaviorRequestServiceName: 'request_behavior'
+
+# The list of {robot_name_1 : robot_name_2} pairs. 
+# robot_name_1 - the name of the actuator in the domain name
+# robot_name_2 - the name of the real robot that is used in the experiment
+RobotsInUseMap: {Catcher: mbot05, Runner: mbot02}
+
+# Slot names
+IsPersonCloseSlotName: 'IsPersonClose'
+PersonLocationSlotName: 'People_Localization_Tracker_2'
+CurrentBehaviorResultSlotName: 'CurrentBehaviorResult'
+CurrentExecutingBehSlotName: 'CurrentExecutingBehaviors'
+BatteryStatusSlotName: 'BatteriesVoltage'
+RFIDReadingSlotName: 'RFIDReading'
+RFIDInfoSlotName: 'RFIDInfo'
+
+# Each planner's sensor name corresponds to the name of the slot in SAM
+# Key: <sensor name in the planner>, Value: <name of the topic used for updating this sensor>
+SensorsSlotsMap: {command: command_from_user, child_detected: RFIDReading, human_detected_in_playroom: People_Localization_Tracker_2, teacher_in_classroom: RFIDReading, children_in_classroom: RFIDReading, answer_correct: TODO }
+
+# School Teaching Scenario TODO
+PupilRfidTag: 1100
+
+# Testing: Read sensors values from sensor traces instead from SAM, and
+# use visual GUI to stop behaviors (instead from SAM)
+TestingMode: false

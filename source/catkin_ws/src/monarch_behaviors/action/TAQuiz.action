@@ -1,0 +1,9 @@
+
+# No need for goal so leaving them empty
+monarch_msgs/KeyValuePairArray goal
+---
+# No need for result so leaving them empty
+monarch_msgs/KeyValuePairArray result
+---
+# No need for feedback so leaving them empty
+monarch_msgs/KeyValuePairArray feedback

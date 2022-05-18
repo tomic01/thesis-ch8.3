@@ -1,0 +1,18 @@
+# Define the goal
+#float32 bias_length
+#int32 formation_id
+#int32 max_cc
+#int32 leader_id
+#int32 follower_1
+#int32 follower_2
+#int32 follower_3
+#int32 number_of_robots
+monarch_msgs/KeyValuePairArray goal
+---
+# Define the result
+#bool reached
+monarch_msgs/KeyValuePairArray result
+---
+# Define a feedback message
+#bool formation_intact
+monarch_msgs/KeyValuePairArray feedback

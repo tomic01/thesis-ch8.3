@@ -1,0 +1,3 @@
+<node pkg="rosbag" type="record" name="oru_bag"
+    args="-o oru_bag /sar/tag01 /sar/tag02 /sar/tag03 /sar/mbot03/tfPose /sar/mbot11/tfPose"
+/>

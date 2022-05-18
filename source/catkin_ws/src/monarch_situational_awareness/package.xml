@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package>
+  <name>monarch_situational_awareness</name>
+  <version>0.0.1</version>
+  <description>This package contains the THIN Situational Awareness Module (SAM) implementation</description>
+
+  <maintainer email="TODO@TODO.TODO">TODO</maintainer>
+  <author email="TODO@TODO.TODO">TODO</author> -->
+
+    <license>BSD</license>
+
+  <build_depend>message_generation</build_depend> 
+  <build_depend>std_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>message_runtime</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>rospy</run_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- You can specify that this package is a metapackage here: -->
+    <!-- <metapackage/> -->
+
+    <!-- Other tools can request additional information be placed here -->
+    <rosdoc config="rosdoc.yaml" />
+  </export>
+</package>

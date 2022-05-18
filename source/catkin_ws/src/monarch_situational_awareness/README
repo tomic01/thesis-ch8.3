@@ -1,0 +1,199 @@
+Thin SAM README
+
+
+Introduction:
+
+Since (1) the SAM module is not currently maintained, (2) it has been showing hard to debug issues, (3) it is currently little 
+more than a thin layer on top of ROS and a multi-master solution (multimaster_fkie), it was proposed to replace it with direct 
+access to the multi-master environment. However, in order to prevent partners to re-write significant parts of their code, it 
+was proposed the development of a very thin layer to expose the ROS publish/subscribe interface with an API compatible with SAM. 
+In particular, it is proposed to limit the scope of this API to the SAM helper functions only
+
+
+Multimaster infrastructure:
+
+Since SAM is based on multimaster_fkie, it is proposed to use it to synchronize the SAM slots directly as topic names directly 
+(instead of the “_in” and “_out” logic). Therefore, multimaster_fkie has to be launched and configured in order to synchronize 
+only a specific namespace. The SAM slots will appear on this namespace with their own names.
+
+
+API specification:
+
+Two classes should be defined -- SAMReader and SAMWriter -- that directly create ROS Subscribers and Publishers. 
+The access semantics of SAMReaders and SAMWriters is almost the same as Subscribers (callback) and Publishers (publish() method). 
+However, since the constructor method does not take the data type as argument, these types have to be previously loaded from an external 
+file (slot_config.yaml), has happens in SAM. In addition, the latch flag and whether this is a slot group has also to be loaded from this 
+external file. These classes should be created for both Python and C++, just like the sam_helpers module.
+
+
+Packaging:
+
+This API should be packaged as a ROS catkin package, named monarch_situational_awarenes (thus replacing the SAM package with the same name), 
+o that nothing else need to be changed in order to use this packaged instead of the original SAM.
+
+
+How to use Thin SAM:
+
+Thin SAM is implemented as a catkin_package, which is available in the project’s SVN repository. A local instance of SAM can be executed as a 
+single ROS Node. Checkout the code to a catkin repository and launch the thin_sam.launch script in the monarch_situational_awareness package 
+(“roslaunch monarch_situational_awareness thin_sam.launch”).      
+
+
+Creating / Editing a Repository:
+
+As it was described above, the simplest way to create a Thin SAM slot is by writing a description of the slots that it should contain as a YAML file. 
+An example of such a file now follows:
+
+#First, invididual (non-grouped) Slots
+singles:
+  -
+        name: Slot A
+        description: 'This is a really important Slot'
+        type_str: std_msgs/String
+        is_shared: False
+        is_latched: False
+  -
+        name: Second Slot
+        description: 'This is used for the fundamental process of explanation'
+        type_str: std_msgs/UInt8
+        is_shared: False
+        is_latched: False
+  -
+        name: Spam
+        description: 'May contain Eggs'
+        type_str: std_msgs/Float64
+        is_shared: False
+        is_latched: False
+
+#Then, a description of Slot Groups
+groups:
+  -
+      hosts: ['mpc01','mbot01'] #List of hostnames. If you leave this out or
+                                #define it as [], that means that the Slot
+                                #will be instantiated for the ‘default
+                                # group’ hosts
+
+      representative: #this is the representative Slot
+          name: Is It Raining
+          description: 'This is a predicate that will be created both for mpc01 and also for mbot01. That is, in your SAR, 
+    you will end up with two slots: [mpc01] Is It Raining, and [mbot01] Is It Raining'
+          type_str: std_msgs/Bool
+          is_shared: True
+          is_latched: False
+
+
+
+(Optional) Specifying the hostnames of the ROS Masters to synchronize:
+
+In multimaster mode, by default, all roscore will synchronize with each other. Optionally, it is also possible to run Thin SAM in unicast with a static list 
+of hosts that are allowed to sychronize.
+
+Open the file monarch_situational_awareness/config/agent_names.yaml and monarch_situational_awareness/config/robot_hosts.yaml.
+The file should look like the following:
+
+    agent_names: ["mpc01","mbot01l","mbot02l","mbot03l","mbot04l"]
+    robot_hosts: ["mpc01","mbot01l","mbot02l","mbot03l","mbot04l"]
+
+Each of the elements in this list is one of the hostnames that will be searched for in the network. Edit the list to contain the hostnames of the machines that you wish to synchronize with.
+
+The ‘active_hosts’ topic in the Thin SAM namespace can be subscribed to by nodes that wish to know which agents are connected to the network at a given time. This topic is latched, and the list is updated whenever a host appears on / disappears from the network. This can be used, for instance, to know which robots are running at any given time. Note, however, that non-communicative hosts will only be removed from the list after a pre-defined amount of time (by default, 20 seconds, but configurable as the ‘~keepalive_period’ parameter), so this list is not guaranteed to be delay-free.
+
+
+Interacting Thin SAM with from your code:
+
+Since the Thin SAM interface is service-based, that means that from within your code you must simply instantiate the respective service clients, so no header files or libraries are needed. In the following, we show examples of how to create readers and writers from within a ROS node. Note that the following code snippets are not fully executable (or even compilable) ROS nodes. For fully-functional examples of how to write SAM client nodes, you can consult the nodes that are defined within the ‘sam_client_tests’ package.
+
+--------------------------------
+Example 1: creating an SA Reader explicitly in Python
+
+#import the necessary message types
+from monarch_situational_awareness.msg import ReaderProperties
+
+#1) declare a service proxy
+rospy.wait_for_service('create_reader')
+cr = rospy.ServiceProxy('create_reader', CreateReader)
+
+#2) Instantiate your ReaderProperties
+rp = ReaderProperties(slot_name="Slot A")
+
+#3) Call the service
+r = CreateReaderResponse()
+rate = rospy.Rate(1) # 1hz
+while r.success is False:
+    r = cr(rp)
+    rate.sleep()
+
+#4) Subscribe to the topic contained in the response
+sa = rospy.Subscriber(r.topic_name, std_msgs.msg.String, callback)
+
+
+--------------------------------
+Example 2: creating an SA Reader explicitly in C++
+
+//Necessary includes
+#include <monarch_situational_awareness/CreateReader.h>
+
+//Reader Creation:
+//Explicit style - without using helpers----------------------------
+ros::NodeHandle n;
+ros::service::waitForService("create_reader");    
+monarch_situational_awareness::CreateReader cr;
+string topic_name;
+ros::Duration d(5.0);
+while(!cr.response.success)
+{
+  cr.request.properties.slot_name = "Slot B";
+
+  //you can also set the agent name here if needed.
+  cr.request.properties.agent_name = "";
+  service::call("create_reader",cr);
+  d.sleep();
+}
+
+ros::Subscriber sub = n.subscribe(cr.response.topic_name,1,callback);
+
+The creation of Writers is analogous, since the service request and response types are equivalent (you should advertise to the response topic instead of subscribing to it).
+Since the procedure to create SAM Readers and Writers is fairly repetitive, and to ease development of client software modules, the monarch_situational_awareness package also provides a set of helper classes, visible to the general MOnarCH code as the ‘sam_helpers’ package, that can be used to abstract the service-based interaction. These can be included / imported and used directly within your code.
+
+The following are examples of their use.
+
+
+--------------------------------
+Example 3: creating SA Readers / Writers in Python using the sam_helpers
+
+from sam_helpers.reader import SAMReader
+from sam_helpers.writer import SAMWriter
+
+#Easy method - use sam_helpers.reader.SAMReader
+rc = SAMReader("Slot C",callback)
+
+#For slot groups, specify the agent through the ‘agent_name’ argument
+rc = SAMReader("Predicate", callback_p, agent_name=”mbot01”)
+
+#It is even easier for writers. Call the writer.publish function when needed
+wc = SAMWriter("Slot D")
+
+
+--------------------------------
+Example 4: creating SA Readers / Writers in C++ using the sam_helpers
+
+#include <sam_helpers/writer.h>
+#include <sam_helpers/reader.h>
+
+//NOTE: For writers, you must specify the message type at construction.
+SAMWriter<std_msgs::Float64> we("Slot E");
+
+//You can then publish to the writer as you would to a ROS Publisher.
+//Reader creation:
+SAMReader ra("Slot A", callback);
+
+//Reader creation for a specific slot of a given group
+SAMReader rp("Predicate", ”mbot01”, callback_p);
+
+
+
+Contributors:
+    Rodrigo Ventura
+    José Nuno Pereira
+    João Mendes
+    Pedro Mendes

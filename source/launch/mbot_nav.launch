@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<launch>
+  <group ns="$(env MBOT_NAME)">
+
+    <!-- Diagnostics -->
+    <!-- <include file="$(find monarch_diagnostics)/launch/diagnostics.launch"/> -->
+
+    <!-- SAM -->
+    <include file="$(find monarch_situational_awareness)/launch/thin_sam.launch"/>
+
+    <!-- NAVIGATION -->
+    <include file="mbot_navigation.launch" />
+
+    <!-- TF REMAP -->
+    <remap from="/tf" to="/$(env MBOT_NAME)/tf"/>
+
+    <!-- OWN TF SAM BROADCASTER -->
+    <node pkg="graph_based_formations" 
+        type="pose_tf_broadcaster.py"
+        name="pose_tf_broadcaster"/>
+
+    <!-- BROADCASTER OF ROBOT'S LOCATION (FOR THE PLANNER) -->
+    <!-- <node pkg="graph_based_formations" 
+        type="zone_broadcaster.py"
+        name="zone_broadcaster"/> -->
+
+    <!-- GRAPH-BASED FORMATION CONTROL -->
+    <!-- <node pkg="graph_based_formations"
+        type="formation_control.py"
+        name="formation_control"
+        output="screen"/> -->
+
+    <!-- RELATIVE RANGE AND BEARING -->
+    <!-- <node pkg="graph_based_formations"
+        type="range_and_bearing.py"
+        name="range_and_bearing"
+        output="screen"/> -->
+
+      
+    <!-- LOCAL BEHAVIOR MANAGER -->
+    <!-- <include file="$(find monarch_behaviors)/launch/mbot_behaviors.launch" />
+    <node name="local_behavior_manager"
+          pkg="monarch_behaviors"
+          type="local_behavior_manager.py"
+          output="screen"/> -->
+
+    <!-- RFID NODE -->   
+    <!-- <include file="$(find rfid_node)/rfid_person_detection.launch">
+        <arg name="bf" default="0" />
+    </include> -->
+
+     <!-- Asus Launch -->
+     <!-- <include file="$(find openni2_launch)/launch/openni2.launch">
+    	 <arg name="camera" value="asus"/>
+     </include> -->
+   </group>
+</launch>

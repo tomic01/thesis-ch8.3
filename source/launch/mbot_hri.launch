@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="loglevel" default="INFO"/>
+  <arg name="init_file" default="init_CAs.xml"/>
+  <arg name="loop_rate" default="0.1"/> <!-- seconds -->
+  <group ns="$(env MBOT_NAME)">
+
+    <!-- Diagnostics -->
+    <!-- <include file="$(find monarch_diagnostics)/launch/diagnostics.launch" /> -->
+
+    <include file="$(find interaction_executor_manager)/launch/interaction_executor.launch">
+    </include>
+
+
+    <!-- Questions and answers to the Teaching Assistant (TA) Quiz game -->
+    <rosparam command="load" file="$(find interaction_common)/params/ta_quiz_questions.yaml" />
+
+    <!-- INTERACTION MANAGER -->
+    <include file="$(find dialog_manager)/launch/mbot_interaction_manager.launch">
+        <arg name="atoms" value="default_atoms.xml"/>
+        <arg name="init_file" value="$(arg init_file)" />
+        <arg name="loop_rate" value="$(arg loop_rate)"/> <!-- seconds -->
+        <arg name="debug" value="$(arg loglevel)" />
+        <!-- debug levels:  ERROR, WARNING, INFO,
+                            DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4 -->
+    </include>
+
+    <!-- Kinect Launch -->
+    <include file="$(find openni_launch)/launch/openni.launch">
+	    <arg name="camera" value="kinect"/>
+      <!--arg name="depth_registration" value="true"/-->
+    </include>
+  </group>
+
+</launch>

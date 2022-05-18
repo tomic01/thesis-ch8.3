@@ -1,0 +1,18 @@
+<launch>
+	<!-- setting anchors position through yaml file -->
+	<!-- setting tags position (w.r.t. origin) through yaml file -->
+	
+	<rosparam file="$(find ie_uwb)/config_files/anchors_pos_table.yaml" ns="anchors" />
+	<rosparam file="$(find ie_uwb)/config_files/tags_config.yaml" ns="tags_config" />
+	
+	<rosparam param="world_frame">map</rosparam>
+
+
+	<!-- launching system for tag0 -->
+	
+	<node name="driver0" pkg="ie_uwb" type="driver.py" output="screen"> 
+	<param name="id" value="BACK" />
+	<param name="src" value="/dev/ttyUSB0" />
+	</node>
+
+</launch>

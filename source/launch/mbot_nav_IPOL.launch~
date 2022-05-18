@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<launch>
+  <group ns="$(env MBOT_NAME)">
+
+    <!-- Diagnostics -->
+    <!-- <include file="$(find monarch_diagnostics)/launch/diagnostics.launch"/> -->
+
+    <!-- SAM -->
+    <include file="$(find monarch_situational_awareness)/launch/sam_multimaster.launch">
+        <arg name="load_topics" value="true"/>
+    </include>
+
+    <!-- NAVIGATION -->
+    <include file="mbot_navigation_ipol.launch" />
+
+    <!-- TF REMAP -->
+    <remap from="/tf" to="/$(env MBOT_NAME)/tf"/>
+
+    <!-- OWN TF SAM BROADCASTER -->
+    <node pkg="graph_based_formations" 
+        type="pose_tf_broadcaster.py"
+        name="pose_tf_broadcaster"/>
+
+    <!-- GRAPH-BASED FORMATION CONTROL -->
+    <node pkg="graph_based_formations"
+        type="formation_control.py"
+        name="formation_control"
+        output="screen"/>
+      
+    <!-- LOCAL BEHAVIOR MANAGER -->
+    <include file="$(find monarch_behaviors)/launch/mbot_behaviors.launch" />
+    <node name="local_behavior_manager"
+          pkg="monarch_behaviors"
+          type="local_behavior_manager.py"
+          output="screen"/>
+
+    <node pkg="graph_based_formations"
+        type="range_and_bearing.py"
+        name="range_and_bearing"
+        output="screen"/>
+
+    <!-- RFID NODE -->
+    <include file="$(find rfid_node)/rfid_person_detection.launch">
+        <arg name="bf" default="0" />
+    </include>
+
+  </group>
+
+</launch>

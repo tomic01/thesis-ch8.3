@@ -1,0 +1,20 @@
+#use standard header
+Header header
+
+#Temperatures measured by each sensor in degrees celsius and booleans for temperatures higher than 40 degrees celsius.
+uint8 leftFrontMotorTemp
+uint8 rightFrontMotorTemp
+uint8 leftRearMotorTemp
+uint8 rightRearMotorTemp
+uint8 leftFrontDriverTemp
+uint8 rightFrontDriverTemp
+uint8 leftRearDriverTemp
+uint8 rightRearDriverTemp
+bool leftFrontMotorTempIsHigh
+bool rightFrontMotorTempIsHigh
+bool leftRearMotorTempIsHigh
+bool rightRearMotorTempIsHigh
+bool leftFrontDriverTempIsHigh
+bool rightFrontDriverTempIsHigh
+bool leftRearDriverTempIsHigh
+bool rightRearDriverTempIsHigh
